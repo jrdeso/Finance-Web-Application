@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block main %}
+    <h3 class="page-headers">Account Settings</h3>
+
+    <!-- Change Name Form -->
+    <h5>Change your Name:</h5>
+    <form method="post" action="/settings">
+        <div class="mb-3">
+            <p>Change your account name from '{{name}}'?</p>
+            <label for="newName" class="form-label">Change Name:</label>
+            <input type="text" class="form-control" id="newName" name="newName" required>
+        </div>
+        <!-- Hidden input used to decipher action in flask app -->
+        <input type="hidden" name="action" value="change_name">
+
+        <button type="submit" class="btn btn-primary">Update Name</button>
+    </form>
+
+    <!-- Change Password Form -->
+    <h5 class="settings-headers">Reset your Password:</h5>
+    <form method="post" action="/settings">
+        <div class="mb-3">
+            <label for="currentPassword" class="form-label">Current Password:</label>
+            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+        </div>
+        <div class="mb-3">
+            <label for="newPassword" class="form-label">New Password:</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm New Password:</label>
+            <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+        </div>
+        <!-- Hidden input used to decipher action in flask app -->
+        <input type="hidden" name="action" value="change_password">
+
+        <button type="submit" class="btn btn-primary">Change Password</button>
+    </form>
+
+    <!-- Delete Account Form -->
+    <h5 class="settings-headers">Delete your Account:</h5>
+    <form method="post" action="/settings" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+
+        <!-- Hidden input used to decipher action in flask app -->
+        <input type="hidden" name="action" value="delete_account">
+
+        <button type="submit" class="btn btn-danger">Delete My Account</button>
+    </form>
+
+{% endblock %}

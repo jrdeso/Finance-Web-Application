@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+
+    <h2>Hello {{name}}!</h2>
+
+    <h4>Income and Expense Transactions</h4>
+    <table class="financeTable">
+        <thead>
+            <tr>
+                <!-- Col headers (add icon depending on how sorted) -->
+                <th>
+                    <a href="#" onclick="toggleSort('date')">
+                      Date
+                      {% if sort_by == 'date' %}
+                        {% if sort_order == 'asc' %}
+                          &#9650; <!-- upward arrow -->
+                        {% else %}
+                          &#9660; <!-- downward arrow -->
+                        {% endif %}
+                      {% endif %}
+                    </a>
+                  </th>
+
+                  <th>
+                    <a href="#" onclick="toggleSort('memo')">
+                      Memo
+                      {% if sort_by == 'memo' %}
+                        {% if sort_order == 'asc' %}
+                          &#9650; <!-- upward arrow -->
+                        {% else %}
+                          &#9660; <!-- downward arrow -->
+                        {% endif %}
+                      {% endif %}
+                    </a>
+                  </th>
+
+                  <th>
+                    <a href="#" onclick="toggleSort('amount')">
+                      Amount
+                      {% if sort_by == 'amount' %}
+                        {% if sort_order == 'asc' %}
+                          &#9650; <!-- upward arrow -->
+                        {% else %}
+                          &#9660; <!-- downward arrow -->
+                        {% endif %}
+                      {% endif %}
+                    </a>
+                  </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr style="background-color: {{'#ffcccc' if transaction.transaction_type == 'expense' else '#ccddff'}};">
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.memo }}</td>
+                    <td>{{ transaction.amount | usd }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleSort(column) {
+          var currentSortOrder = "{{ sort_order }}";
+          var newSortOrder = "{{ new_sort_order }}";
+
+          if (column === "{{ sort_by }}") {
+            // Toggle the sort order
+            newSortOrder = currentSortOrder === "asc" ? "desc" : "asc";
+          }
+
+          // Redirect to the updated URL with the new sort_by and sort_order parameters
+          window.location.href = "{{ url_for('home') }}?sort_by=" + column + "&sort_order=" + newSortOrder;
+        }
+      </script>
+{% endblock %}

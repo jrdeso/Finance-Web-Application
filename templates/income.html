@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Income
+{% endblock %}
+
+{% block main %}
+<h3 class="page-headers">New Entry</h3>
+<form method="post" action="/income">
+    <div class="form-group row">
+        <div class="col-sm-4 mb-3">
+            <input class="form-control" type="date" name="date" placeholder="mm/dd/yyyy" required>
+        </div>
+
+        <div class="col-sm-4 mb-3">
+            <input class="form-control" type="text" name="memo" placeholder="Memo" required>
+        </div>
+
+        <div class="col-sm-4 mb-3">
+            <input class="form-control" type="number" step="0.01" name="amount" placeholder="Amount" required>
+        </div>
+
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </div>
+</form>
+
+
+
+<h3 class="page-headers">Income History</h3>
+<table>
+    <thead>
+        <tr>
+            <!-- Col headers (add icon depending on how sorted) -->
+            <th>
+                <a href="#" onclick="toggleSort('date')">
+                    Date
+                    {% if sort_by == 'date' %}
+                    {% if sort_order == 'asc' %}
+                        &#9650; <!-- upward arrow -->
+                    {% else %}
+                        &#9660; <!-- downward arrow -->
+                    {% endif %}
+                    {% endif %}
+                </a>
+                </th>
+
+                <th>
+                <a href="#" onclick="toggleSort('memo')">
+                    Memo
+                    {% if sort_by == 'memo' %}
+                    {% if sort_order == 'asc' %}
+                        &#9650; <!-- upward arrow -->
+                    {% else %}
+                        &#9660; <!-- downward arrow -->
+                    {% endif %}
+                    {% endif %}
+                </a>
+                </th>
+
+                <th>
+                <a href="#" onclick="toggleSort('amount')">
+                    Amount
+                    {% if sort_by == 'amount' %}
+                    {% if sort_order == 'asc' %}
+                        &#9650; <!-- upward arrow -->
+                    {% else %}
+                        &#9660; <!-- downward arrow -->
+                    {% endif %}
+                    {% endif %}
+                </a>
+                </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for income_entry in incomes %}
+        <tr>
+            <td>{{ income_entry.date }}</td>
+            <td>{{ income_entry.memo }}</td>
+            <td>{{ income_entry.amount | usd}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<script>
+    function toggleSort(column) {
+      var currentSortOrder = "{{ sort_order }}";
+      var newSortOrder = "{{ new_sort_order }}";
+
+      if (column === "{{ sort_by }}") {
+        // Toggle the sort order
+        newSortOrder = currentSortOrder === "asc" ? "desc" : "asc";
+      }
+
+      // Redirect to the updated URL with the new sort_by and sort_order parameters
+      window.location.href = "{{ url_for('income') }}?sort_by=" + column + "&sort_order=" + newSortOrder;
+    }
+  </script>
+{% endblock %}
