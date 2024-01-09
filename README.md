@@ -58,6 +58,6 @@ Visit `http://localhost:5000` in your web browser to access the application.
 
 ## Contributors
 
-This project was developed as part of HarvardX CS50 by Jordan Deso.
+This project was developed by Jordan Deso.
 
 
